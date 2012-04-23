@@ -999,7 +999,7 @@ def integrate_f(double a, double b, int N):
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/stefan/akad/voordragte/2010/trento/cython/sketse/code_flow_python_vs_C.png
+	filename ../sketse/code_flow_python_vs_C.png
 	lyxscale 40
 	width 80text%
 
@@ -1981,6 +1981,28 @@ Benchmark!
 
 \begin_layout Section
 Wrapping C and C++ Libraries
+\end_layout
+
+\begin_layout Slide
+Fortran
+\end_layout
+
+\begin_layout Standard
+We won't be talking about that here, but Ondrej Certik has some excellent
+ notes:
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\size large
+http://fortran90.org/src/best-practices.html#interfacing-with-python
 \end_layout
 
 \begin_layout Slide
