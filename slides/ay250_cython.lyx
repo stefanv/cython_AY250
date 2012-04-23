@@ -237,7 +237,7 @@ Motivation
 
 
 \begin_inset Graphics
-	filename /home/stefan/akad/voordragte/2010/trento/cython/sketse/lang_speed.png
+	filename ../sketse/lang_speed.png
 	lyxscale 30
 	width 100text%
 
@@ -381,7 +381,7 @@ Our code aims to compute (an approximation of)
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/stefan/akad/voordragte/2010/trento/cython/sketse/LeftRiemann2.png
+	filename ../sketse/LeftRiemann2.png
 	lyxscale 30
 	width 60text%
 
@@ -406,7 +406,7 @@ More Segments
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/stefan/akad/voordragte/2010/trento/cython/sketse/LeftRiemann.png
+	filename ../sketse/LeftRiemann.png
 	height 60theight%
 
 \end_inset
@@ -2594,8 +2594,20 @@ Re-implement bottlenecks (behavior verified by tests)
 \end_layout
 
 \begin_layout Itemize
-Et voilà.
- High-level code, low-level performance.
+Et voilà---high-level code, low-level performance.
+ [It's no silver bullet, but it's still pretty good.]
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename sound_barrier.jpg
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout EndSlide
