@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass powerdot
@@ -39,18 +39,26 @@
 \end_preamble
 \options style=fyma,display=slides,mode=present,paper=screen
 \use_default_options false
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize size=10
 \spacing single
 \use_hyperref false
@@ -58,42 +66,41 @@
 \use_geometry true
 \use_amsmath 1
 \use_esint 0
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation landscape
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language french
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Title
-\begin_inset VSpace -0.8in
-\end_inset
-
-The Quest for Speed:
+Speeding up Scientific Python code using
 \begin_inset Newline newline
 \end_inset
 
-An Introduction to Cython
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
+Cython
 \begin_inset Newline newline
 \end_inset
 
@@ -114,30 +121,8 @@ An Introduction to Cython
 \end_inset
 
 
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\size small
-Presented at the G-Node Autumn School on
-\begin_inset Newline newline
-\end_inset
-
-Advanced Scientific Programming in Python,
-\begin_inset Newline newline
-\end_inset
-
- held in Trento, Italy
 \size normal
-
-\begin_inset space ~
-\end_inset
-
-
+AY250, UCB
 \begin_inset Newline newline
 \end_inset
 
@@ -151,10 +136,6 @@ Advanced Scientific Programming in Python,
 
 
 \begin_inset space ~
-\end_inset
-
-
-\begin_inset Newline newline
 \end_inset
 
 
@@ -170,14 +151,10 @@ Advanced Scientific Programming in Python,
 
 \begin_layout Author
 Stéfan van der Walt
-\begin_inset Newline newline
-\end_inset
-
-Stellenbosch University, South Africa
 \end_layout
 
 \begin_layout Date
-October, 2010
+04/23/2012
 \end_layout
 
 \begin_layout Standard
@@ -257,7 +234,7 @@ Motivation (continued)
 \end_layout
 
 \begin_layout Itemize
-Cython allows us to cross the gap!
+Cython allows us to cross the gap
 \end_layout
 
 \begin_layout Itemize
@@ -266,30 +243,27 @@ This is good news because
 
 \begin_deeper
 \begin_layout Itemize
-we get to keep coding in Python (or something close to Python)
+we get to keep coding in Python (or, at least, a superset)
 \end_layout
 
 \begin_layout Itemize
-we get the speed advantage of C
+but with the speed advantage of C
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
-You can't have your cake and eat it.
- (
+
 \emph on
 Non si puo avere la botte piena è la moglie ubriaca
 \emph default
-.) But this comes pretty close!
+.
+ But this comes pretty close!
 \end_layout
 
 \begin_layout Itemize
-Cython originates from Pyrex (been used in NumPy's 
-\family typewriter
-mtrand
-\family default
- module for a long time, e.g.); it is well maintained with an active user
- community, wide adoption.
+Conditions / loops approx.
+ 2--8x speed increase, 30% overall; with annotations: hundreds of times
+ faster
 \end_layout
 
 \begin_layout Slide
@@ -297,15 +271,15 @@ Use Cases
 \end_layout
 
 \begin_layout Itemize
-Optimising execution of Python code (profile, if possible!)
+Optimize execution of Python code (profile, if possible!)
 \end_layout
 
 \begin_layout Itemize
-Wrapping existing C, C++ (and soon Fortran) code
+Wrap existing C, C++ (and soon Fortran) code
 \end_layout
 
 \begin_layout Itemize
-Breaking out of the GIL!
+Breaking out of the GIL; openmp
 \end_layout
 
 \begin_layout Itemize
@@ -317,7 +291,7 @@ Tutorial Overview
 \end_layout
 
 \begin_layout Standard
-For this quick introduction, we'll take the following route:
+For this quick introduction, we'll take the following approach:
 \end_layout
 
 \begin_layout Enumerate
@@ -355,7 +329,7 @@ From Python to Cython
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -400,7 +374,7 @@ Our code aims to compute (an approximation of)
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -424,7 +398,7 @@ More Segments
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -557,7 +531,7 @@ def integrate_f(a, b, N):
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -566,7 +540,7 @@ method=direct
 
 \end_inset
 
-Apply Cython to the Python code
+Compile the code with Cython
 \end_layout
 
 \begin_layout Itemize
@@ -583,15 +557,12 @@ What is happening behind the scenes?
 cython -a filename.[py|pyx]
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 Cython translates Python to C, using the Python C API (let's have a look)
 \end_layout
 
-\begin_layout Itemize
-Cython has a basic type inferencing engine, it is very conservative for
- safety reasons.
-\end_layout
-
+\end_deeper
 \begin_layout Itemize
 This code has some serious 
 \emph on
@@ -599,7 +570,7 @@ bottlenecks.
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -615,7 +586,32 @@ Compile generated code
 \begin_inset VSpace -0.15in
 \end_inset
 
-In 
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ gcc -O2 -fPIC -I/usr/include/python2.7
+\end_layout
+
+\begin_layout Plain Layout
+
+  -c integrate.c -o integrate_compiled.o 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Easier yet, construct 
 \family typewriter
 setup.py
 \family default
@@ -664,17 +660,7 @@ setup(
 
 \begin_layout Plain Layout
 
-    Extension("integrate_cy",
-\end_layout
-
-\begin_layout Plain Layout
-
-              ["integrate.py"],
-\end_layout
-
-\begin_layout Plain Layout
-
-             ),
+    Extension("integrate_cy", ["integrate.py"]),
 \end_layout
 
 \begin_layout Plain Layout
@@ -700,49 +686,10 @@ in-place
 \end_inset
 
 .
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If no extra C libraries or special build setup are needed, you may use pyximport
- to automagically compile 
-\family typewriter
-.pyx 
-\family default
-files:
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\family typewriter
->>> import pyximport; pyximport.install()
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -782,9 +729,138 @@ Can we help Cython to do even better?
 Yes---by giving it some clues.
 \end_layout
 
+\begin_layout Itemize
+Cython has a basic type inferencing engine, but it is very conservative
+ for safety reasons.
+\end_layout
+
+\begin_layout Itemize
+Why does type information allow such vast speed increases?
+\end_layout
+
 \end_deeper
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+method=direct
+\end_layout
+
+\end_inset
+
+Providing type information
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\small\ttfamily},escapechar={`},language=Python,showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from __future__ import division
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def f(`
+\backslash
+colorbox{pink}{double x}`):
+\end_layout
+
+\begin_layout Plain Layout
+
+   return x**4 - 3 * x
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def integrate_f(`
+\backslash
+colorbox{pink}{double a, double b, int N}`):
+\end_layout
+
+\begin_layout Plain Layout
+
+    """Rectangle integration of a function.
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+    `
+\backslash
+colorbox{pink}{cdef:}`
+\end_layout
+
+\begin_layout Plain Layout
+
+	    `
+\backslash
+colorbox{pink}{double s = 0}`
+\end_layout
+
+\begin_layout Plain Layout
+
+        `
+\backslash
+colorbox{pink}{double dx = (b - a) / N}`
+\end_layout
+
+\begin_layout Plain Layout
+
+	    `
+\backslash
+colorbox{pink}{size
+\backslash
+_t i}`
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    for i in range(N):
+\end_layout
+
+\begin_layout Plain Layout
+
+        s += f(a + i * dx)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return s * dx
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Slide
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -985,7 +1061,7 @@ def integrate_f(a, b, N):
 \end_layout
 
 \begin_layout WideSlide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1016,127 +1092,7 @@ Benchmark...
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
-status open
-
-\begin_layout Plain Layout
-method=direct
-\end_layout
-
-\end_inset
-
-Alternative syntax
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "basicstyle={\small\ttfamily},escapechar={`},language=Python,showstringspaces=false"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-`
-\backslash
-colorbox{pink}{
-\backslash
-# This code DOES NOT run under Python!}`
-\end_layout
-
-\begin_layout Plain Layout
-
-from __future__ import division
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def f(`
-\backslash
-colorbox{pink}{double x}`):
-\end_layout
-
-\begin_layout Plain Layout
-
-   return x**4 - 3 * x
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def integrate_f(`
-\backslash
-colorbox{pink}{double a, double b, int N}`):
-\end_layout
-
-\begin_layout Plain Layout
-
-    """Rectangle integration of a function.
-\end_layout
-
-\begin_layout Plain Layout
-
-    ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    """
-\end_layout
-
-\begin_layout Plain Layout
-
-    `
-\backslash
-colorbox{pink}{cdef double s = 0}`
-\end_layout
-
-\begin_layout Plain Layout
-
-    `
-\backslash
-colorbox{pink}{cdef double dx = (b - a) / N}`
-\end_layout
-
-\begin_layout Plain Layout
-
-	`
-\backslash
-colorbox{pink}{cdef int i}`
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    for i in range(N):
-\end_layout
-
-\begin_layout Plain Layout
-
-        s += f(a + i * dx)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return s * dx
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1232,7 +1188,7 @@ def integrate_f(double a, double b, int N):
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1370,7 +1326,7 @@ Handling NumPy Arrays
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1464,7 +1420,7 @@ _include()]}`,
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1555,7 +1511,7 @@ Different types are defined in the file
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1658,6 +1614,7 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100text%"
 special "none"
 height "1in"
@@ -1699,7 +1656,7 @@ g
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1848,7 +1805,7 @@ Parallel Threads with Cython
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -1979,7 +1936,7 @@ colorbox{pink}{with nogil:}`
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -2100,7 +2057,7 @@ Wrapping C Libraries
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -2186,7 +2143,7 @@ def test_trig():
 \end_layout
 
 \begin_layout Slide
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
