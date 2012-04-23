@@ -5,9 +5,6 @@ from Cython.Distutils import build_ext
 setup(
     cmdclass = {'build_ext': build_ext},
     ext_modules = [
-        Extension("trig" ,
-                  ["trig.pyx"],
-                  libraries=["m"],
-        ),
+        Extension("circ", ["circ.pyx", "Circle.cpp"], language="c++"),
+        Extension("trig", ["trig.pyx"], libraries=["m"]),
 ])
-
