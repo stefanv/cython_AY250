@@ -6,7 +6,7 @@
 \begin_preamble
 \usepackage{listings}
 \pdsetup{%
-  lf=G-Node Workshop---Trento 2010,
+  lf=AY250 UCB,
 %  rf=NumPy: Kittens \& Dragons,
   logohook=t,
   palette=green,
@@ -96,12 +96,7 @@
 \begin_body
 
 \begin_layout Title
-Speeding up Scientific Python code using
-\begin_inset Newline newline
-\end_inset
-
-Cython
-\begin_inset Newline newline
+\begin_inset VSpace -0.95in
 \end_inset
 
 
@@ -109,6 +104,14 @@ Cython
 \end_inset
 
 
+\begin_inset Newline newline
+\end_inset
+
+Speeding up scientific Python code using
+\begin_inset Newline newline
+\end_inset
+
+Cython
 \begin_inset Newline newline
 \end_inset
 
@@ -135,15 +138,11 @@ AY250, UCB
 \end_inset
 
 
-\begin_inset space ~
-\end_inset
+\begin_inset Graphics
+	filename warp1.jpg
+	lyxscale 10
+	width 70text%
 
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset Newline newline
 \end_inset
 
 
@@ -202,6 +201,24 @@ not
 \end_inset
 
 
+\end_layout
+
+\begin_layout WideSlide
+Example Code
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1.1in
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size huge
+https://github.com/stefanv/cython_AY250
 \end_layout
 
 \begin_layout Section
@@ -271,15 +288,15 @@ Use Cases
 \end_layout
 
 \begin_layout Itemize
-Optimize execution of Python code (profile, if possible!)
+Optimize execution of Python code (profile, if possible! -- demo)
 \end_layout
 
 \begin_layout Itemize
-Wrap existing C, C++ (and soon Fortran) code
+Wrap existing C and C++ code
 \end_layout
 
 \begin_layout Itemize
-Breaking out of the GIL; openmp
+Breaking out of the Global Interpreter Lock; openmp
 \end_layout
 
 \begin_layout Itemize
@@ -473,7 +490,7 @@ def integrate_f(a, b, N):
 
 \begin_layout Plain Layout
 
-    a, b : ints
+    a, b : int
 \end_layout
 
 \begin_layout Plain Layout
@@ -814,7 +831,7 @@ colorbox{pink}{cdef:}`
 
 \begin_layout Plain Layout
 
-	    `
+        `
 \backslash
 colorbox{pink}{double s = 0}`
 \end_layout
@@ -828,7 +845,7 @@ colorbox{pink}{double dx = (b - a) / N}`
 
 \begin_layout Plain Layout
 
-	    `
+        `
 \backslash
 colorbox{pink}{size
 \backslash
@@ -837,207 +854,6 @@ _t i}`
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-    for i in range(N):
-\end_layout
-
-\begin_layout Plain Layout
-
-        s += f(a + i * dx)
-\end_layout
-
-\begin_layout Plain Layout
-
-    return s * dx
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Slide
-\begin_inset Argument
-status open
-
-\begin_layout Plain Layout
-method=direct
-\end_layout
-
-\end_inset
-
-Annotate Types using Decorators (Pure Python)
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace -0.25in
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "basicstyle={\small\ttfamily},escapechar={`},language=Python,showstringspaces=false"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-`
-\backslash
-colorbox{pink}{
-\backslash
-# This code still runs under Python!}`
-\end_layout
-
-\begin_layout Plain Layout
-
-from __future__ import division
-\end_layout
-
-\begin_layout Plain Layout
-
-import cython
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-`
-\backslash
-colorbox{pink}{@cython.locals(x=cython.double)}`
-\end_layout
-
-\begin_layout Plain Layout
-
-def f(x):
-\end_layout
-
-\begin_layout Plain Layout
-
-   return x**4 - 3 * x
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-`
-\backslash
-colorbox{pink}{@cython.locals(a=cython.double, b=cython.double,}`
-\end_layout
-
-\begin_layout Plain Layout
-
-`
-\backslash
-colorbox{pink}{
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- N=cython.int, s=cython.double,}`
-\end_layout
-
-\begin_layout Plain Layout
-
-`
-\backslash
-colorbox{pink}{
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- 
-\backslash
- dx=cython.double, i=cython.int)}`
-\end_layout
-
-\begin_layout Plain Layout
-
-def integrate_f(a, b, N):
-\end_layout
-
-\begin_layout Plain Layout
-
-    """Rectangle integration of a function.
-\end_layout
-
-\begin_layout Plain Layout
-
-    ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    """
-\end_layout
-
-\begin_layout Plain Layout
-
-    s = 0
-\end_layout
-
-\begin_layout Plain Layout
-
-    dx = (b - a) / N
 \end_layout
 
 \begin_layout Plain Layout
@@ -1138,17 +954,22 @@ def integrate_f(double a, double b, int N):
 
 \begin_layout Plain Layout
 
-    cdef double s = 0
+	cdef:
 \end_layout
 
 \begin_layout Plain Layout
 
-    cdef double dx = (b - a) / N
+        double s = 0
 \end_layout
 
 \begin_layout Plain Layout
 
-    cdef int i
+        double dx = (b - a) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+        size_t i
 \end_layout
 
 \begin_layout Plain Layout
@@ -1246,17 +1067,26 @@ def integrate_f(double a, double b, int N):
 
 \begin_layout Plain Layout
 
-    cdef double s = 0
+    cdef:
 \end_layout
 
 \begin_layout Plain Layout
 
-    cdef double dx = (b - a) / N
+        double s = 0
 \end_layout
 
 \begin_layout Plain Layout
 
-    cdef int i
+        double dx = (b - a) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+        size_t i
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -1298,6 +1128,117 @@ def integrate_f(double a, double b, int N):
 
 \size huge
 Benchmark!
+\end_layout
+
+\begin_layout Slide
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+method=direct
+\end_layout
+
+\end_inset
+
+Integrating Arbitrary Functions (callbacks)
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\small\ttfamily},escapechar={`},language=Python,showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# cython: cdivision=True
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+cdef class Integrand:
+\end_layout
+
+\begin_layout Plain Layout
+
+     cdef double f(self, double x):
+\end_layout
+
+\begin_layout Plain Layout
+
+         raise NotImplementedError()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+cdef class MyFunc(Integrand):
+\end_layout
+
+\begin_layout Plain Layout
+
+     cdef double f(self, double x):
+\end_layout
+
+\begin_layout Plain Layout
+
+          return x*x*x*x - 3 * x
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def integrate_f(Integrand integrand,
+\end_layout
+
+\begin_layout Plain Layout
+
+                double a, double b, int N):
+\end_layout
+
+\begin_layout Plain Layout
+
+    cdef double s = 0
+\end_layout
+
+\begin_layout Plain Layout
+
+    cdef double dx = (b - a) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+    cdef ssize_t i
+\end_layout
+
+\begin_layout Plain Layout
+
+    for i in range(N):
+\end_layout
+
+\begin_layout Plain Layout
+
+        s += integrand.f(a + i * dx)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return s * dx
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout WideSlide
@@ -1385,12 +1326,7 @@ setup(
 
 \begin_layout Plain Layout
 
-    Extension("matmul",
-\end_layout
-
-\begin_layout Plain Layout
-
-              ["matmul.py"],
+    Extension("numpy_basic", ["numpy_basic.pyx"],
 \end_layout
 
 \begin_layout Plain Layout
@@ -1442,7 +1378,7 @@ status open
 
 `
 \backslash
-colorbox{pink}{cimport numpy as np}`
+colorbox{pink}{cimport numpy as cnp}`
 \end_layout
 
 \begin_layout Plain Layout
@@ -1453,14 +1389,14 @@ colorbox{pink}{cimport numpy as np}`
 
 def foo(`
 \backslash
-colorbox{pink}{np.ndarray[np.float64
+colorbox{pink}{cnp.ndarray[cnp.float64
 \backslash
 _t, ndim=2] arr}`):
 \end_layout
 
 \begin_layout Plain Layout
 
-    cdef int i, j
+    cdef size_t i, j
 \end_layout
 
 \begin_layout Plain Layout
@@ -1503,11 +1439,32 @@ colorbox{pink}{arr[i, j] = i + j}`
 \begin_inset Newline newline
 \end_inset
 
-Different types are defined in the file 
+Different types are defined in 
 \family typewriter
-/usr/share/pyshared/Cython/Includes/numpy.pxd
+Cython/Includes/numpy.pxd
 \family default
- on your virtual machines.
+.
+\end_layout
+
+\begin_layout WideSlide
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1.1in
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size huge
+Exercise break-out
 \end_layout
 
 \begin_layout Slide
@@ -1524,6 +1481,13 @@ Matrix Multiplication
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace -0.3in
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Python,showstringspaces=false"
 inline false
@@ -1531,7 +1495,12 @@ status open
 
 \begin_layout Plain Layout
 
-out = np.zeros(A.shape[0], B.shape[1])
+rows_A, cols_A = A.shape[0], A.shape[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+rows_B, cols_B = B.shape[0], B.shape[1]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1540,12 +1509,7 @@ out = np.zeros(A.shape[0], B.shape[1])
 
 \begin_layout Plain Layout
 
-# Take each row of A
-\end_layout
-
-\begin_layout Plain Layout
-
-for i in range(0, A.shape[0]):
+out = np.zeros(rows_A, cols_B)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1554,12 +1518,26 @@ for i in range(0, A.shape[0]):
 
 \begin_layout Plain Layout
 
-    # And multiply by every column of B
+# Take each row in A
 \end_layout
 
 \begin_layout Plain Layout
 
-    for j in range(B.shape[1]):
+for i in range(rows_A):
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    # And multiply by each column in B
+\end_layout
+
+\begin_layout Plain Layout
+
+    for j in range(cols_B):
 \end_layout
 
 \begin_layout Plain Layout
@@ -1576,17 +1554,17 @@ for i in range(0, A.shape[0]):
 
 \begin_layout Plain Layout
 
-            range(A.shape[1]):
+            range(cols_A):
 \end_layout
 
 \begin_layout Plain Layout
 
-            s += A[i, k] *
+            s = s + A[i, k] *
 \end_layout
 
 \begin_layout Plain Layout
 
-                 B[k, j]
+                    B[k, j]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1604,7 +1582,7 @@ for i in range(0, A.shape[0]):
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace -1in
+\begin_inset VSpace -1.1in
 \end_inset
 
 
@@ -1687,40 +1665,29 @@ status open
 
 \begin_layout Plain Layout
 
-`
+def dot(`
 \backslash
-colorbox{pink}{cimport numpy as np}`
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-def matmul(`
-\backslash
-colorbox{pink}{np.ndarray[np.float64
+colorbox{pink}{cnp.ndarray[cnp.float64
 \backslash
 _t, ndim=2] A,}`
 \end_layout
 
 \begin_layout Plain Layout
 
-           `
+        `
 \backslash
-colorbox{pink}{np.ndarray[np.float64
+colorbox{pink}{cnp.ndarray[cnp.float64
 \backslash
 _t, ndim=2] B,}`
 \end_layout
 
 \begin_layout Plain Layout
 
-           `
+        `
 \backslash
-colorbox{pink}{np.ndarray[np.float64
+colorbox{pink}{cnp.ndarray[cnp.float64
 \backslash
-_t, ndim=2] out):}`
+_t, ndim=2] out}`):
 \end_layout
 
 \begin_layout Plain Layout
@@ -1731,14 +1698,40 @@ _t, ndim=2] out):}`
 
     `
 \backslash
-colorbox{pink}{cdef int i, j, k}`
+colorbox{pink}{cdef:}`
 \end_layout
 
 \begin_layout Plain Layout
 
-    `
+        `
 \backslash
-colorbox{pink}{cdef np.float64
+colorbox{pink}{size
+\backslash
+_t rows
+\backslash
+_A, cols
+\backslash
+_A, rows
+\backslash
+_B, cols
+\backslash
+_B}`
+\end_layout
+
+\begin_layout Plain Layout
+
+        `
+\backslash
+colorbox{pink}{size
+\backslash
+_t i, j, k}`
+\end_layout
+
+\begin_layout Plain Layout
+
+        `
+\backslash
+colorbox{pink}{cnp.float64
 \backslash
 _t s}`
 \end_layout
@@ -1749,12 +1742,12 @@ _t s}`
 
 \begin_layout Plain Layout
 
-    # Take each row of A
+    rows_A, cols_A = A.shape[0], A.shape[1]
 \end_layout
 
 \begin_layout Plain Layout
 
-    for i in range(0, A.shape[0]):
+    rows_B, cols_B = B.shape[0], B.shape[1]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1763,12 +1756,22 @@ _t s}`
 
 \begin_layout Plain Layout
 
-        # And multiply by every column of B
+    # Take each row in A
 \end_layout
 
 \begin_layout Plain Layout
 
-        for j in range(B.shape[1]):
+    for i in range(rows_A):
+\end_layout
+
+\begin_layout Plain Layout
+
+        # And multiply by every column in B
+\end_layout
+
+\begin_layout Plain Layout
+
+        for j in range(cols_B):
 \end_layout
 
 \begin_layout Plain Layout
@@ -1778,16 +1781,12 @@ _t s}`
 
 \begin_layout Plain Layout
 
-            for k in range(A.shape[1]):
+            for k in range(cols_A):
 \end_layout
 
 \begin_layout Plain Layout
 
-                s += A[i, k] * B[k, j]
-\end_layout
-
-\begin_layout Plain Layout
-
+                s = s + A[i, k] * B[k, j]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1801,7 +1800,7 @@ _t s}`
 \end_layout
 
 \begin_layout Section
-Parallel Threads with Cython
+Parallelization
 \end_layout
 
 \begin_layout Slide
@@ -1814,7 +1813,15 @@ method=direct
 
 \end_inset
 
-Averting the Global Interpreter Lock
+Parallel Loops with 
+\begin_inset Quotes fld
+\end_inset
+
+prange
+\begin_inset Quotes frd
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1839,32 +1846,54 @@ colorbox{pink}{@cython.boundscheck(False)}`
 
 \begin_layout Plain Layout
 
-def matmul_partitioned(int start, int end,
+`
+\backslash
+colorbox{pink}{@cython.wraparound(False)}`
 \end_layout
 
 \begin_layout Plain Layout
 
-               np.ndarray[np.float64_t, ndim=2] A,
+def pdot(cnp.ndarray[cnp.float64_t, ndim=2] A,
 \end_layout
 
 \begin_layout Plain Layout
 
-               np.ndarray[np.float64_t, ndim=2] B,
+         cnp.ndarray[cnp.float64_t, ndim=2] B,
 \end_layout
 
 \begin_layout Plain Layout
 
-               np.ndarray[np.float64_t, ndim=2] out):
+         cnp.ndarray[cnp.float64_t, ndim=2] out):
 \end_layout
 
 \begin_layout Plain Layout
 
-    cdef int i, j, k
+    cdef:
 \end_layout
 
 \begin_layout Plain Layout
 
-    cdef np.float64_t s
+        size_t rows_A, cols_A, rows_B, cols_B
+\end_layout
+
+\begin_layout Plain Layout
+
+        size_t i, j, k
+\end_layout
+
+\begin_layout Plain Layout
+
+        double s
+\end_layout
+
+\begin_layout Plain Layout
+
+    rows_A, cols_A = A.shape[0], A.shape[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+    rows_B, cols_B = B.shape[0], B.shape[1]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1880,30 +1909,24 @@ colorbox{pink}{with nogil:}`
 
 \begin_layout Plain Layout
 
+        # Take each row in A
 \end_layout
 
 \begin_layout Plain Layout
 
-        # Take a selected few rows from A
+        for i in `
+\backslash
+colorbox{pink}{prange}`(rows_A):
 \end_layout
 
 \begin_layout Plain Layout
 
-        for i in range(start, end):
+            # And multiply by every column in B
 \end_layout
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-            # And multiply each column of B
-\end_layout
-
-\begin_layout Plain Layout
-
-            for j in range(B.shape[1]):
+            for j in range(cols_B):
 \end_layout
 
 \begin_layout Plain Layout
@@ -1913,12 +1936,12 @@ colorbox{pink}{with nogil:}`
 
 \begin_layout Plain Layout
 
-                for k in range(A.shape[1]):
+                for k in range(cols_A):
 \end_layout
 
 \begin_layout Plain Layout
 
-                    s += A[i, k] * B[k, j]
+                    s = s + A[i, k] * B[k, j]
 \end_layout
 
 \begin_layout Plain Layout
@@ -1928,102 +1951,6 @@ colorbox{pink}{with nogil:}`
 \begin_layout Plain Layout
 
                 out[i, j] = s
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Slide
-\begin_inset Argument
-status open
-
-\begin_layout Plain Layout
-method=direct
-\end_layout
-
-\end_inset
-
-Set Up Threads
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "escapechar={`},language=Python,showstringspaces=false"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-A = np.random.random((800, 200))
-\end_layout
-
-\begin_layout Plain Layout
-
-B = np.random.random((200, 300))
-\end_layout
-
-\begin_layout Plain Layout
-
-C = np.zeros((800, 300))
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-N = len(A)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-a = threading.Thread(target=matmul_partitioned,
-\end_layout
-
-\begin_layout Plain Layout
-
-                     args=(0, N//2, A, B, C))
-\end_layout
-
-\begin_layout Plain Layout
-
-b = threading.Thread(target=matmul_partitioned,
-\end_layout
-
-\begin_layout Plain Layout
-
-                     args=(N//2, N, A, B, C))
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-a.start()
-\end_layout
-
-\begin_layout Plain Layout
-
-b.start()
-\end_layout
-
-\begin_layout Plain Layout
-
-a.join()
-\end_layout
-
-\begin_layout Plain Layout
-
-b.join()
 \end_layout
 
 \end_inset
@@ -2053,7 +1980,7 @@ Benchmark!
 \end_layout
 
 \begin_layout Section
-Wrapping C Libraries
+Wrapping C and C++ Libraries
 \end_layout
 
 \begin_layout Slide
@@ -2227,25 +2154,448 @@ colorbox{pink}{libraries=["m"]}`,
 
 \end_layout
 
+\begin_layout Slide
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+method=direct
+\end_layout
+
+\end_inset
+
+C++ Class Wrapper
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "escapechar={`},language={C++},showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+namespace geom {
+\end_layout
+
+\begin_layout Plain Layout
+
+    class Circle {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public:
+\end_layout
+
+\begin_layout Plain Layout
+
+        Circle(double x, double y, double r);
+\end_layout
+
+\begin_layout Plain Layout
+
+        ~Circle();
+\end_layout
+
+\begin_layout Plain Layout
+
+        double getX();
+\end_layout
+
+\begin_layout Plain Layout
+
+        double getY();
+\end_layout
+
+\begin_layout Plain Layout
+
+        double getRadius();
+\end_layout
+
+\begin_layout Plain Layout
+
+        double getArea();
+\end_layout
+
+\begin_layout Plain Layout
+
+        void setCenter(double x, double y);
+\end_layout
+
+\begin_layout Plain Layout
+
+        void setRadius(double r);
+\end_layout
+
+\begin_layout Plain Layout
+
+    private:
+\end_layout
+
+\begin_layout Plain Layout
+
+        double x;
+\end_layout
+
+\begin_layout Plain Layout
+
+        double y;
+\end_layout
+
+\begin_layout Plain Layout
+
+        double r;
+\end_layout
+
+\begin_layout Plain Layout
+
+    };
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Slide
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+method=direct
+\end_layout
+
+\end_inset
+
+C++ Class Wrapper
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "escapechar={`},language={C++},showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cdef extern from "Circle.h" namespace "geom":
+\end_layout
+
+\begin_layout Plain Layout
+
+     cdef cppclass Circle:
+\end_layout
+
+\begin_layout Plain Layout
+
+          Circle(double, double, double)
+\end_layout
+
+\begin_layout Plain Layout
+
+          double getX()
+\end_layout
+
+\begin_layout Plain Layout
+
+          double getY()
+\end_layout
+
+\begin_layout Plain Layout
+
+          double getRadius()
+\end_layout
+
+\begin_layout Plain Layout
+
+          double getArea()
+\end_layout
+
+\begin_layout Plain Layout
+
+          void setCenter(double, double)
+\end_layout
+
+\begin_layout Plain Layout
+
+          void setRadius(double)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Slide
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+method=direct
+\end_layout
+
+\end_inset
+
+C++ Class Wrapper
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace -0.3in
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "escapechar={`},language={C++},showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cdef class PyCircle:
+\end_layout
+
+\begin_layout Plain Layout
+
+    `
+\backslash
+colorbox{pink}{cdef Circle *thisptr}`
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    def __cinit__(self, double x, double y, double r):
+\end_layout
+
+\begin_layout Plain Layout
+
+        `
+\backslash
+colorbox{pink}{self.thisptr = new Circle(x, y, r)}`
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    def __dealloc__(self):
+\end_layout
+
+\begin_layout Plain Layout
+
+        del self.thisptr
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @property
+\end_layout
+
+\begin_layout Plain Layout
+
+    def area(self):
+\end_layout
+
+\begin_layout Plain Layout
+
+        return self.thisptr.getArea()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @property
+\end_layout
+
+\begin_layout Plain Layout
+
+    def radius(self):
+\end_layout
+
+\begin_layout Plain Layout
+
+        return self.thisptr.getRadius()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    def set_radius(self, r):
+\end_layout
+
+\begin_layout Plain Layout
+
+        self.thisptr.setRadius(r)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @property
+\end_layout
+
+\begin_layout Plain Layout
+
+    def center(self):
+\end_layout
+
+\begin_layout Plain Layout
+
+        return (self.thisptr.getX(), self.thisptr.getY())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    def set_center(self, x, y):
+\end_layout
+
+\begin_layout Plain Layout
+
+        self.thisptr.setCenter(x, y)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Slide
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+method=direct
+\end_layout
+
+\end_inset
+
+C++ Class Wrapper
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "escapechar={`},language={C++},showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from distutils.core import setup
+\end_layout
+
+\begin_layout Plain Layout
+
+from distutils.extension import Extension
+\end_layout
+
+\begin_layout Plain Layout
+
+from Cython.Distutils import build_ext
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+setup(
+\end_layout
+
+\begin_layout Plain Layout
+
+    cmdclass = {'build_ext': build_ext},
+\end_layout
+
+\begin_layout Plain Layout
+
+    ext_modules = [
+\end_layout
+
+\begin_layout Plain Layout
+
+        `
+\backslash
+colorbox{pink}{Extension("circ", ["circ.pyx", "Circle.cpp"],}`
+\end_layout
+
+\begin_layout Plain Layout
+
+                 `
+\backslash
+colorbox{pink}{language="c++")}`,
+\end_layout
+
+\begin_layout Plain Layout
+
+        Extension("trig", ["trig.pyx"],
+\end_layout
+
+\begin_layout Plain Layout
+
+                  libraries=["m"]),
+\end_layout
+
+\begin_layout Plain Layout
+
+])
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout WideSlide
-\begin_inset space ~
-\end_inset
-
-
+In conclusion...
 \end_layout
 
-\begin_layout Standard
-\begin_inset VSpace 1.1in
-\end_inset
-
-
+\begin_layout Itemize
+Build functional and tested code
 \end_layout
 
-\begin_layout Standard
-\align center
+\begin_layout Itemize
+Profile
+\end_layout
 
-\size huge
-Exercises
+\begin_layout Itemize
+Re-implement bottlenecks (behavior verified by tests)
+\end_layout
+
+\begin_layout Itemize
+Et voilà.
+ High-level code, low-level performance.
 \end_layout
 
 \begin_layout EndSlide
