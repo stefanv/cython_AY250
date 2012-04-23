@@ -1,5 +1,9 @@
 *.c
 *.html
 *.so
-build
+**build
+*~
+*.pyc
+*.o
+*#
 *~
